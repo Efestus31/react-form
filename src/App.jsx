@@ -15,27 +15,42 @@ function App() {
   const [titles, setTitles] = useState(articlesTitles)
   const [newTitles, setNewTitles] = useState('')
 
-  function addArticle(e) {
+  function handleAddArticle(e) {
     e.preventDefault()
-    console.log(articlesTitles);
-    console.log(newTitles);
-
+    //console.log(articlesTitles);
+    //console.log(newTitles);
     //add new item to the UI
+    //spreading the old array
     setTitles([
       newTitles,
       ...titles
     ])
-
+    //svuota l'input
     setNewTitles('')
-
   }
+
+  function handleTitleTrash(e) {
+    //select the index of the item to delete
+    //console.log(e.target);
+    const titleToTrash = Number(e.target.getAttribute('data-index'))
+    //console.log(titleToTrash);
+
+
+    //remove title based on the index
+    const newTitles = titles.filter((article, index) => index != titleToTrash)
+
+    //update the UI
+    setTitles(newTitles)
+  }
+
+
 
   return (
     <>
 
       <div className="container">
         <h1>Form</h1>
-        <form onSubmit={addArticle}>
+        <form onSubmit={handleAddArticle}>
           <div className="mb-3">
 
 
@@ -58,9 +73,12 @@ function App() {
         </form>
 
 
-        <ul className="list-group list-group-numbered">
-          {titles.map((article, index) => <li key={index} className='list-group-item'>
+        <ul className="list-group list-group">
+          {titles.map((article, index) => <li key={index} className='list-group-item d-flex justify-content-between'>
             {article}
+            <button className='btn btn-danger' onClick={handleTitleTrash} data-index={index}>
+              <i class="bi bi-trash3"></i>
+            </button>
           </li>)}
 
 
